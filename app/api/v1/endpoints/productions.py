@@ -18,17 +18,19 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=ProductionSchema)
-async def add_production(
-    create_production: ProductionCreateSchema,
-    session: AsyncSession = Depends(session_dependency),
-    ) -> Production:
+# @router.post("/", response_model=ProductionSchema)
+# async def add_production(
+#     product_id: int,
+#     create_production: ProductionCreateSchema,
+#     session: AsyncSession = Depends(session_dependency),
+#     ) -> Production:
     
-    production = await crud_production.create_production(
-        session=session,
-        production_create=create_production,
-    )
+#     production = await crud_production.create_production(
+#         session=session,
+#         production_create=create_production,
+#         product_id=product_id,
+#     )
 
-    return production
+#     return production
     
     
