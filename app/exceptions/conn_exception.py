@@ -1,6 +1,6 @@
 from .exception import BaseAppException
 
-class DataBaseConnectionError(BaseException):
+class DataBaseConnectionError(BaseAppException):
     
     def __init__(
         self,
