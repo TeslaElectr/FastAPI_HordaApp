@@ -19,12 +19,38 @@ async def get_all_products(
         .order_by(Product.id)
     )
     
-    result: Result = await session.execute(stmt)
+    try:
+        result: Result = await session.execute(stmt)
+    except Exception as e:
+        print(e)
+        raise DataBaseConnectionError()
+
     products = list(result.scalars().all())
 
     return products
 
+
+async def get_proudct_by_id(
+    session: AsyncSession,
+    product_id: int,
+    ) -> Product:
+
+    stmt = (
+        select(Product)
+        .where(Product.id == product_id)
+    )
+
+    try:
+        result: Result = await session.execute(stmt)
+    except Exception as e:
+        print(e)
+        raise DataBaseConnectionError()
+
+    product = result.scalar_one_or_none()
+
+    return product
     
+
 async def create_product(
     session: AsyncSession,
     product_create: ProductCreateSchema,
