@@ -1,7 +1,7 @@
 __all__ = (
-    "session_dependency",
+    "db_conn",
 )
 
 
 
-from .session import session_dependency
+from .session import db_conn
