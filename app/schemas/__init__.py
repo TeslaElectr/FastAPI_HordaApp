@@ -5,6 +5,8 @@ __all__ = (
     "ProductSchema",
     "TypeCreateSchema",
     "TypeSchema",
+    "ProductCreateSchema",
+    "ProductSchema",
 )
 
 
@@ -16,3 +18,6 @@ from .product import ProductSchema
 
 from .type import TypeCreateSchema
 from .type import TypeSchema
+
+from .production import ProductCreateSchema
+from .production import ProductSchema
