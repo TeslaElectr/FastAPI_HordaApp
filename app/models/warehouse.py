@@ -1,4 +1,4 @@
-from .base import Base
+from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -6,6 +6,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, Integer
 from sqlalchemy import String
 
+from .base import Base
+
+if TYPE_CHECKING:
+    from .company import Company
 
 class Warehouse(Base):
     address: Mapped[str] = mapped_column(
@@ -27,7 +31,7 @@ class Warehouse(Base):
         nullable=False,
     )
 
-    company = relationship(
+    company: Mapped["Company"] = relationship(
         "Company",
-        uselist=False,
+        back_populates="warehouses",
     )

@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -7,6 +9,14 @@ from sqlalchemy import Text
 
 from .products_productions_stocks_associated import products_productions_stocks_associated
 from .base import Base
+
+if TYPE_CHECKING:
+    from .company import Company
+    from .product import Product
+    from .type import Type
+    from .recipe import Recipe
+    from .stock import Stock
+    from .production import Production
 
 class Stock(Base):
     
@@ -26,16 +36,6 @@ class Stock(Base):
         nullable=False,
     )
 
-    company = relationship(
-        "Company",
-        uselist=False, #what is this??
-    )
-
-    product = relationship(
-        "Product",
-        uselist=False,
-    )
-
     company_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("companys.id"),
@@ -50,13 +50,24 @@ class Stock(Base):
         unique=False,
     )
 
-    products = relationship(
+    company: Mapped["Company"] = relationship(
+        "Company",
+        back_populates="stocks",
+    )
+
+    product: Mapped["Product"] = relationship(
+        "Product",
+        back_populates="stocks",
+    )
+
+
+    products: Mapped[list["Product"]] = relationship(
         "Product",
         back_populates="stocks_m2m",
         secondary=products_productions_stocks_associated,
     )
     
-    productions = relationship(
+    productions: Mapped[list["Production"]] = relationship(
         "Production",
         back_populates="stocks_m2m",
         secondary=products_productions_stocks_associated,

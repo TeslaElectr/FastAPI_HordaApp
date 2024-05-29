@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -6,11 +8,14 @@ from sqlalchemy import String
 from sqlalchemy import Float
 from sqlalchemy import Text
 
-from .products_productions_stocks_associated import products_productions_stocks_associated
-from .base import Base
 
-from .product import Product
-from .stock import Stock
+from .base import Base
+from .products_productions_stocks_associated import products_productions_stocks_associated
+
+
+if TYPE_CHECKING:
+    from .product import Product
+    from .stock import Stock
 
 class Production(Base):
     

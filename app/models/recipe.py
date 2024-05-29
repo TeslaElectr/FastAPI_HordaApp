@@ -1,4 +1,4 @@
-from .base import Base
+from typing import TYPE_CHECKING
 
 from sqlalchemy import JSON
 from sqlalchemy import Integer
@@ -8,6 +8,11 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 
+from .base import Base
+
+if TYPE_CHECKING:
+    from .product import Product
+
 class Recipe(Base):
     recipe: Mapped[dict] = mapped_column(
         JSON,
@@ -15,7 +20,7 @@ class Recipe(Base):
         nullable=False,
     )
 
-    products = relationship(
+    products: Mapped[list["Product"]] = relationship(
         "Product",
         back_populates="recipe",
     )

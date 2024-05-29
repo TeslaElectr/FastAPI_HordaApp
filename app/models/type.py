@@ -1,4 +1,4 @@
-from .base import Base
+from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import Mapped
@@ -7,6 +7,11 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Text
 
+
+from .base import Base
+
+if TYPE_CHECKING:
+    from .product import Product
 
 class Type(Base):
     
@@ -22,7 +27,7 @@ class Type(Base):
         unique=True,
     )
 
-    products = relationship(
+    products: Mapped[list["Product"]] = relationship(
         "Product",
         back_populates="type1"
     )

@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -6,6 +7,14 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 
 from .base import Base
+
+
+if TYPE_CHECKING:
+    from .warehouse import Warehouse
+    from .product import Product
+    from .stock import Stock
+
+
 
 class Company(Base):
     
@@ -48,17 +57,17 @@ class Company(Base):
         nullable=True,
     )
 
-    products = relationship(
+    products: Mapped[list["Product"]] = relationship(
         "Product",
         back_populates="company",
     )
 
-    stocks = relationship(
+    stocks: Mapped[list["Stock"]] = relationship(
         "Stock",
         back_populates="company",
     )
 
-    warehouses = relationship(
+    warehouses: Mapped[list["Warehouse"]] = relationship(
         "Warehouse",
         back_populates="company",
     )
