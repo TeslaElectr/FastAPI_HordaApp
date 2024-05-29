@@ -3,6 +3,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 from sqlalchemy import String
+from sqlalchemy import Float
 from sqlalchemy import Text
 
 from .products_productions_stocks_associated import products_productions_stocks_associated
@@ -22,6 +23,18 @@ class Production(Base):
         Text,
         unique=False,
         nullable=False,
+    )
+    
+    weight_product: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+        unique=False,
+    )
+
+    weight_stock: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+        unique=False,
     )
 
     products: Mapped[list["Product"]] = relationship(
