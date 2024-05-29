@@ -50,15 +50,15 @@ class Company(Base):
 
     products = relationship(
         "Product",
-        back_populates="company"
+        back_populates="company",
     )
 
     stocks = relationship(
         "Stock",
-        back_populates="company"
+        back_populates="company",
     )
 
     warehouses = relationship(
         "Warehouse",
-        back_populates="company"
+        back_populates="company",
     )

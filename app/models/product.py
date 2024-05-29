@@ -24,20 +24,27 @@ class Product(Base):
         nullable=False,
     )
 
+    company = relationship(
+        "Company",
+        uselist=False #what is this??
+    )
+
     type1 = relationship(
         "Type",
         uselist=False,
     )
+
+    recipe = relationship(
+        "Recipe",
+        uselist=False,
+    )
+
 
     stocks = relationship(
         "Stock",
         back_populates="product"
     )
 
-    company = relationship(
-        "Company",
-        uselist=False #what is this??
-    )
 
     company_id: Mapped[int] = mapped_column(
         Integer,
@@ -49,6 +56,13 @@ class Product(Base):
     type_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("types.id"),
+        nullable=False,
+        unique=False,
+    )
+
+    recipe_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("recipes.id"),
         nullable=False,
         unique=False,
     )
