@@ -2,7 +2,9 @@ from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Company
+
 from schemas import CompanyCreateSchema
+from schemas import CompanySchema
 
 from exceptions import DataBaseConnectionError
 from exceptions import PydanticDumpException
@@ -48,3 +50,32 @@ async def create_company(
         
 
     return company
+
+    
+    
+    
+async def create_companies(
+    session: AsyncSession,
+    company_list: list[CompanyCreateSchema],
+    ) -> list[Company]:
+    
+    try:
+        companies = [
+            Company(**company.model_dump())
+            for company in company_list
+        ]
+    except Exception as e:
+        print(e)
+        raise PydanticDumpException()
+
+    session.add_all(companies)
+
+    try:
+        await session.commit() 
+    except Exception as e:
+        print(e)
+        raise DataBaseConnectionError()
+
+    return companies
+        
+

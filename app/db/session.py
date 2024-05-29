@@ -18,34 +18,27 @@ class DataBaseHelper:
         self.url = url
         self.echo = echo
         self.max_overflow = max_overflow
-        self.pool_size = pool_size
+        self.pool_size = config.DB_pool_size
 
-    def create_engine(self) -> AsyncEngine:
-        engine = create_async_engine(
+        self.engine = create_async_engine(
             url=self.url,
             echo=self.echo,
-            max_overflow=self.max_overflow,
+            max_overflow=self.maxoverflow,
             pool_size=self.pool_size,
-            )
-        return engine
+        )
 
-
-    def create_session(self) -> AsyncSession:
-
-        self.engine = self.create_engine()
-
-        session = async_sessionmaker(
+        self.session_factory = async_sessionmaker(
+            
             bind=self.engine,
             class_=AsyncSession,
             autoflush=False,
             expire_on_commit=False,
         )
-        return session
 
 
     async def session_dependency(self):
-        self.session = self.create_session()
-        async with self.session() as conn:
+        self.session = self.session_factory
+        async with self.session as conn:
             yield conn
 
 
