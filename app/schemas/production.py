@@ -4,11 +4,13 @@ from pydantic import BaseModel
 class ProductionBaseSchema(BaseModel):
     address: str
     description: str
+    weight_product: float
+    weight_stock: float
 
     
-class ProductCreateSchema(ProductionBaseSchema):
+class ProductionCreateSchema(ProductionBaseSchema):
     pass 
 
 
-class ProductSchema(ProductionBaseSchema):
+class ProductionSchema(ProductionBaseSchema):
     id: int
