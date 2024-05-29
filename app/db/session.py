@@ -13,7 +13,7 @@ engine = create_async_engine(
 )
 
 
-async_session = async_sessionmaker(
+session = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     autoflush=False,
@@ -22,5 +22,5 @@ async_session = async_sessionmaker(
 
 
 async def session_dependency():
-    async with async_session() as session:
-        yield session
+    async with session() as conn:
+        yield conn
