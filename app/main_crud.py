@@ -45,17 +45,17 @@ async def create_companies(
 
     create_companies = get_list_companies()
 
-    result = crud_company.create_companies(
+    result = await crud_company.create_companies(
         session=session,
         company_list=create_companies,
         )
     return result
 
 async def main():
-    async with db_helper.create_session() as session:
+    async with db_helper.session_factory() as session:
         companies = get_list_companies()
-
-        await create_companies(session=session, create_companies=companies)
+        company_list = await create_companies(session=session, create_companies=companies)
+        print(company_list)
 
 
 if __name__ == "__main__":

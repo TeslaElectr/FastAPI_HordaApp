@@ -4,6 +4,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 from sqlalchemy import Integer
+from sqlalchemy import BigInteger
 from sqlalchemy import String
 
 from .base import Base
@@ -29,13 +30,13 @@ class Company(Base):
         nullable=False,
     )
     inn: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         unique=True,
         nullable=True,
     )
 
     kpp: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=True,
         unique=True,
     )
@@ -46,7 +47,7 @@ class Company(Base):
     )
 
     phone: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         unique=True,
         nullable=True,
     )

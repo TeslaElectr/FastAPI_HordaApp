@@ -23,12 +23,11 @@ class DataBaseHelper:
         self.engine = create_async_engine(
             url=self.url,
             echo=self.echo,
-            max_overflow=self.maxoverflow,
+            max_overflow=self.max_overflow,
             pool_size=self.pool_size,
         )
 
         self.session_factory = async_sessionmaker(
-            
             bind=self.engine,
             class_=AsyncSession,
             autoflush=False,
@@ -37,8 +36,7 @@ class DataBaseHelper:
 
 
     async def session_dependency(self):
-        self.session = self.session_factory
-        async with self.session as conn:
+        async with self.session_factory() as conn:
             yield conn
 
 
