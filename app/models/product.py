@@ -58,7 +58,7 @@ class Product(Base):
 
     company: Mapped["Company"] = relationship(
         "Company",
-        uselist=False #what is this??
+        back_populates="products",
     )
 
     type1: Mapped["Type"] = relationship(
