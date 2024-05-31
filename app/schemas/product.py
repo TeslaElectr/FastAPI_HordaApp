@@ -11,8 +11,14 @@ class ProductCreateSchema(ProductBaseSchema):
     pass 
 
 
+class ProductCreateSchema2(ProductBaseSchema):
+    company_id: int 
+    type_id: int 
+
+    
 class ProductSchema(ProductBaseSchema):
     id: int
     company_id: int 
     type_id: int 
+
     
