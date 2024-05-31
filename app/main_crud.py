@@ -10,17 +10,19 @@ from models import Production
 from models import Recipe
 
 from crud import company as crud_company
+from crud import product as crud_product
 
 from schemas import CompanyCreateSchema
+from schemas import ProductCreateSchema
+from schemas import ProductionCreateSchema
 
 from db import db_conn as db_helper
 
-from .cfg_company import get_list_companies
+from cfg_company import get_list_companies
     
 
 async def create_companies(
     session: AsyncSession,
-    create_companies: CompanyCreateSchema,
     ):
 
     create_companies = get_list_companies()
@@ -31,10 +33,24 @@ async def create_companies(
         )
     return result
 
+
+async def create_products(
+    session: AsyncSession,
+    ):
+
+    products_list = ...
+
+    result = await crud_product.create_products(
+        session=session,
+       create_products=products_list,
+        )
+
+    return result
+
+
 async def main():
     async with db_helper.session_factory() as session:
-        companies = get_list_companies()
-        company_list = await create_companies(session=session, create_companies=companies)
+        company_list = await create_companies(session=session)
         print(company_list)
 
 

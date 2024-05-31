@@ -1,11 +1,13 @@
-
 from sqlalchemy import select
 from sqlalchemy import Result
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Product
+
+from schemas import ProductCreateSchema2
 from schemas import ProductCreateSchema
+
 from exceptions import PydanticDumpException
 from exceptions import DataBaseConnectionError
 
@@ -79,6 +81,37 @@ async def create_product(
             )
 
     return product
+
+    
+async def create_products(
+    session: AsyncSession,
+    create_products:ProductCreateSchema2,
+    ):
+
+    try:
+        products = [
+            Product(**product.model_dump())
+            for product in create_products
+        ]
+    except Exception as e:
+        print(e)
+        raise PydanticDumpException()
+
+
+    session.add_all(products)
+
+    
+    try:
+        session.commit()
+    except Exception as e:
+        print(e)
+        raise DataBaseConnectionError()
+
+        
+    return products
+    
+
+
 
     
     
