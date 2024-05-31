@@ -80,12 +80,14 @@ class Product(Base):
         "Stock",
         back_populates="products",
         secondary=products_productions_stocks_associated,
+        overlaps="productions",
     )
 
     productions: Mapped[list["Production"]] = relationship(
         "Production",
         back_populates="products",
         secondary=products_productions_stocks_associated,
+        overlaps="stocks_m2m",
     )
 
 
