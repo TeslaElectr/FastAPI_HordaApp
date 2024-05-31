@@ -18,7 +18,7 @@ from schemas import ProductionCreateSchema
 
 from db import db_conn as db_helper
 
-from cfg_company import get_list_companies
+from tests.cfg_company import get_list_companies
     
 
 async def create_companies(
