@@ -9,3 +9,12 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - "5432:5432"
+
+  test_pg:
+    image: postgres
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
