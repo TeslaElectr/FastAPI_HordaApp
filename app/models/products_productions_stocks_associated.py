@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Table
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column
 
 
 from .base import Base

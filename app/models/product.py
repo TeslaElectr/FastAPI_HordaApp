@@ -13,6 +13,7 @@ from sqlalchemy import Text
 from .base import Base
 
 from .products_productions_stocks_associated import products_productions_stocks_associated 
+from .products_products_associated import products_products_associated 
 
 
 if TYPE_CHECKING:
@@ -77,6 +78,18 @@ class Product(Base):
         overlaps="stocks_m2m",
     )
 
+
+    target_products: Mapped[list["Product"]] = relationship(
+        "Product",
+        back_populates="row_products",
+        secondary=products_products_associated,
+    )
+
+    row_products: Mapped[list["Product"]] = relationship(
+        "Product",
+        back_populates="targer_products",
+        secondary=products_products_associated,
+    )
 
 
 
