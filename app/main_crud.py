@@ -23,7 +23,7 @@ from cfg_company import get_list_companies
 
 async def create_companies(
     session: AsyncSession,
-    ):
+    ) -> list[Company]:
 
     create_companies = get_list_companies()
 
@@ -36,7 +36,7 @@ async def create_companies(
 
 async def create_products(
     session: AsyncSession,
-    ):
+    ) -> list[Products]:
 
     products_list = ...
 
