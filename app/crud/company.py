@@ -65,7 +65,7 @@ async def create_companies(
             for company in company_list
         ]
     except Exception as e:
-        print(e)
+        # print(e)
         raise PydanticDumpException()
 
     session.add_all(companies)

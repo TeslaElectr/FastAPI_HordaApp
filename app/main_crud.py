@@ -7,7 +7,6 @@ from models import Company
 from models import Stock
 from models import Type
 from models import Production
-from models import Recipe
 
 from crud import company as crud_company
 from crud import product as crud_product
@@ -21,9 +20,7 @@ from db import db_conn as db_helper
 from cfg_company import get_list_companies
     
 
-async def create_companies(
-    session: AsyncSession,
-    ):
+async def create_companies(session: AsyncSession):
 
     create_companies = get_list_companies()
 
@@ -34,9 +31,7 @@ async def create_companies(
     return result
 
 
-async def create_products(
-    session: AsyncSession,
-    ):
+async def create_products(session: AsyncSession):
 
     products_list = ...
 

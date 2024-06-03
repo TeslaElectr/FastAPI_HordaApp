@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from .company import Company
     from .product import Product
     from .type import Type
-    from .recipe import Recipe
     from .stock import Stock
     from .production import Production
 
