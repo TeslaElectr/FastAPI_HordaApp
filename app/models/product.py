@@ -18,7 +18,6 @@ from .products_productions_stocks_associated import products_productions_stocks_
 if TYPE_CHECKING:
     from .company import Company
     from .type import Type
-    from .recipe import Recipe
     from .stock import Stock
     from .production import Production
 
@@ -49,13 +48,6 @@ class Product(Base):
         unique=False,
     )
 
-    recipe_id: Mapped[int] = mapped_column(
-        Integer,
-        ForeignKey("recipes.id"),
-        nullable=False,
-        unique=False,
-    )
-
     company: Mapped["Company"] = relationship(
         "Company",
         back_populates="products",
@@ -63,11 +55,6 @@ class Product(Base):
 
     type1: Mapped["Type"] = relationship(
         "Type",
-        back_populates="products",
-    )
-
-    recipe: Mapped["Recipe"] = relationship(
-        "Recipe",
         back_populates="products",
     )
 
