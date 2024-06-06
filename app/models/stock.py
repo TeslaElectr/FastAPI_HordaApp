@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .type import Type
     from .stock import Stock
     from .production import Production
+    from .products_productions_stocks_associated import ProductProductionStockAssociated
 
 class Stock(Base):
     
@@ -59,17 +60,21 @@ class Stock(Base):
         back_populates="stocks",
     )
 
+    assoc_details: Mapped[list["ProductProductionStockAssociated"]] = relationship(
+        back_populates="stock",
+    )
 
-    products: Mapped[list["Product"]] = relationship(
-        "Product",
-        back_populates="stocks_m2m",
-        secondary=products_productions_stocks_associated,
-        overlaps="productions",
-    )
+
+    # products: Mapped[list["Product"]] = relationship(
+    #     "Product",
+    #     back_populates="stocks_m2m",
+    #     secondary=products_productions_stocks_associated,
+    #     overlaps="productions",
+    # )
     
-    productions: Mapped[list["Production"]] = relationship(
-        "Production",
-        back_populates="stocks_m2m",
-        secondary=products_productions_stocks_associated,
-        overlaps="products",
-    )
+    # productions: Mapped[list["Production"]] = relationship(
+    #     "Production",
+    #     back_populates="stocks_m2m",
+    #     secondary=products_productions_stocks_associated,
+    #     overlaps="products",
+    # )
