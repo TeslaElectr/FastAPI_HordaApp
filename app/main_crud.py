@@ -22,9 +22,9 @@ from cfg_company import get_list_companies
 
 async def create_companies(session: AsyncSession):
 
-    create_companies = get_list_companies()
+    create_companies: list[CompanyCreateSchema] = get_list_companies()
 
-    result = await crud_company.create_companies(
+    result: list[Company] = await crud_company.create_companies(
         session=session,
         company_list=create_companies,
         )
