@@ -8,7 +8,10 @@ __all__ = (
     "TypeSchema",
     "ProductionCreateSchema",
     "ProductionSchema",
-)
+    "StockCreateSchema",
+    "StockCreateSchema2",
+    "StockSchema",
+    )
 
 
 from .company import CompanyCreateSchema
@@ -20,3 +23,7 @@ from .product import ProductSchema
 
 from .type import TypeCreateSchema
 from .type import TypeSchema
+
+from .stock import StockCreateSchema
+from .stock import StockCreateSchema2
+from .stock import StockSchema
