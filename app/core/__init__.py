@@ -1,2 +1,5 @@
+__all__ = (
+    "settings",
+    )
 
-from . import config
+from .config import settings

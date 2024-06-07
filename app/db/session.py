@@ -3,22 +3,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from core import config
+from core import settings
 
 class DataBaseHelper:
 
     def __init__(
         self,
-        url: str = config.DB_URL,
-        echo: bool = config.DB_ECHO,
-        max_overflow: int = config.DB_max_overflow,
-        pool_size: int = config.DB_pool_size,
+        url: str = settings.DB_URL,
+        echo: bool = settings.DB_ECHO,
+        max_overflow: int = settings.DB_max_overflow,
+        pool_size: int = settings.DB_pool_size,
         ):
 
         self.url = url
         self.echo = echo
         self.max_overflow = max_overflow
-        self.pool_size = config.DB_pool_size
+        self.pool_size = pool_size
 
         self.engine = create_async_engine(
             url=self.url,
