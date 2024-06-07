@@ -20,6 +20,3 @@ from .product import ProductSchema
 
 from .type import TypeCreateSchema
 from .type import TypeSchema
-
-from .production import ProductionCreateSchema
-from .production import ProductionSchema
