@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Float, ForeignKey, Integer
 from sqlalchemy import Text
 
-from .products_productions_stocks_associated import products_productions_stocks_associated
+# from .products_productions_stocks_associated import products_productions_stocks_associated
 from .base import Base
 
 if TYPE_CHECKING:

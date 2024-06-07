@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from sqlalchemy import select
+from sqlalchemy import delete
 from sqlalchemy import Result
 
 from models import Type
@@ -57,3 +58,50 @@ async def create_type(
 
     return type1
     
+
+async def create_types(
+    session: AsyncSession,
+    type_creates: list[TypeCreateSchema],
+    ) -> list[Type]:
+
+    try: 
+        types = [
+            Type(**type1.model_dump())
+            for type1 in type_creates
+        ]
+
+    except Exception as e:
+        print(e)
+        raise PydanticDumpException()
+
+        
+        
+    session.add_all(types)
+    
+    try:
+        await session.commit()
+        
+    except Exception as e:
+        raise DataBaseConnectionError()
+    
+    return types
+
+
+
+
+
+async def delete_all_types(
+    session: AsyncSession,
+    ) -> None:
+    
+    stmt = (
+        delete(Type)
+    )
+
+    await session.execute(stmt)
+    await session.commit()
+
+    
+
+        
+

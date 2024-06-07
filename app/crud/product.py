@@ -1,3 +1,4 @@
+from sqlalchemy import delete
 from sqlalchemy import select
 from sqlalchemy import Result
 
@@ -102,7 +103,7 @@ async def create_products(
 
     
     try:
-        session.commit()
+        await session.commit()
     except Exception as e:
         print(e)
         raise DataBaseConnectionError()
@@ -110,7 +111,21 @@ async def create_products(
         
     return products
     
+async def delete_all_products(
+    session: AsyncSession,
+    ) -> None:
+    
+    stmt = (
+        delete(Product)
+    )
 
+    await session.execute(stmt)
+    await session.commit()
+
+
+
+    
+    
 
 
     

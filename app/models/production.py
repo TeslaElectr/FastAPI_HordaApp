@@ -10,7 +10,7 @@ from sqlalchemy import Text
 
 
 from .base import Base
-from .products_productions_stocks_associated import products_productions_stocks_associated
+# from .products_productions_stocks_associated import products_productions_stocks_associated
 
 
 if TYPE_CHECKING:

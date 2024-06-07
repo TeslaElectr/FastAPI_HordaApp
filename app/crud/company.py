@@ -1,4 +1,6 @@
-from sqlalchemy import Result, select
+from sqlalchemy import select
+from sqlalchemy import delete
+from sqlalchemy import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Company
@@ -65,17 +67,32 @@ async def create_companies(
             for company in company_list
         ]
     except Exception as e:
-        # print(e)
+        print(e)
         raise PydanticDumpException()
 
     session.add_all(companies)
 
-    try:
-        await session.commit() 
-    except Exception as e:
-        print(e)
-        raise DataBaseConnectionError()
+    # try:
+    await session.commit() 
+    # except Exception as e:
+    #     print(e)
+    #     raise DataBaseConnectionError()
 
     return companies
+
+    
+async def delete_all_companies(
+    session: AsyncSession,
+    ) -> None:
+    
+    stmt = (
+        delete(Company)
+    )
+
+    await session.execute(stmt)
+    await session.commit()
+
+    
+
         
 

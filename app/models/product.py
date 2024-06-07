@@ -12,7 +12,7 @@ from sqlalchemy import Text
 
 from .base import Base
 
-from .products_productions_stocks_associated import products_productions_stocks_associated 
+# from .products_productions_stocks_associated import products_productions_stocks_associated 
 # from .products_products_associated import products_products_associated 
 
 
