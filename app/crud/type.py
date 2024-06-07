@@ -88,8 +88,6 @@ async def create_types(
 
 
 
-
-
 async def delete_all_types(
     session: AsyncSession,
     ) -> None:
