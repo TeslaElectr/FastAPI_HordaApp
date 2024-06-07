@@ -94,7 +94,7 @@ class Product(Base):
         secondary=products_products_associated,
         primaryjoin="Product.id == products_products_associated.c.product_id",
         secondaryjoin="Product.id == products_products_associated.c.product_target_id",
-        koreign_keys="[products_products_associated.c.product_id, products_products_associated.c.product_target_id]"
+        foreign_keys="[products_products_associated.c.product_id, products_products_associated.c.product_target_id]"
     )
 
 
