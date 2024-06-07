@@ -2,11 +2,7 @@ import asyncio
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import Product
 from models import Company
-from models import Stock
-from models import Type
-from models import Production
 
 from crud import company as crud_company
 from crud import product as crud_product
@@ -14,7 +10,6 @@ from crud import type as crud_type
 
 from schemas import CompanyCreateSchema
 from schemas import ProductCreateSchema2
-from schemas import ProductionCreateSchema
 from schemas import TypeCreateSchema
 
 from db import db_conn as db_helper
@@ -57,13 +52,10 @@ async def create_types(session: AsyncSession):
 
     return result
     
-    
-    
 
 
-async def main():
+async def queries():
     async with db_helper.session_factory() as session:
-
 
         company_list = await create_companies(session=session)
         type_list = await create_types(session=session)
@@ -76,6 +68,10 @@ async def main():
         # await crud_product.delete_all_products(session=session)
         # await crud_company.delete_all_companies(session=session)
         # await crud_type.delete_all_types(session=session)
+    
+
+async def main():
+    await queries()
 
 
 

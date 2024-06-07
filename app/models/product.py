@@ -20,7 +20,6 @@ if TYPE_CHECKING:
     from .company import Company
     from .type import Type
     from .stock import Stock
-    from .production import Production
     from .products_productions_stocks_associated import ProductProductionStockAssociated
 
 class Product(Base):

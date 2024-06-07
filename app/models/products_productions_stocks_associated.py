@@ -13,7 +13,6 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .product import Product
-    from .production import Production
     from .stock import Stock
 
 
@@ -21,12 +20,6 @@ class ProductProductionStockAssociated(Base):
     product_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("products.id"),
-        primary_key=True
-        )
-
-    production_id: Mapped[int] = mapped_column(
-        Integer,
-        ForeignKey("productions.id"),
         primary_key=True
         )
     
@@ -38,7 +31,6 @@ class ProductProductionStockAssociated(Base):
 
     product: Mapped["Product"] = relationship(back_populates="assoc_details")
     stock: Mapped["Stock"] = relationship(back_populates="assoc_details")
-    production: Mapped["Production"] = relationship(back_populates="assoc_details")
     
 
         
