@@ -15,7 +15,6 @@ if TYPE_CHECKING:
     from .product import Product
     from .type import Type
     from .stock import Stock
-    from .production import Production
     from .products_productions_stocks_associated import ProductProductionStockAssociated
 
 class Stock(Base):

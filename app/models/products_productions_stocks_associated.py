@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 
 class ProductProductionStockAssociated(Base):
+
     product_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("products.id"),
