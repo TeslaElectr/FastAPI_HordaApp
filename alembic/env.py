@@ -22,7 +22,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 
 from app import core
-url = config.set_main_option("sqlalchemy.url", core.config.DB_URL)
+url = config.set_main_option("sqlalchemy.url", core.settings.DB_URL)
 
 
 import app.models as models
