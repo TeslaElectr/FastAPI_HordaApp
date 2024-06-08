@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 
+
 class StockBaseSchema(BaseModel):
     weight: float
     description: str

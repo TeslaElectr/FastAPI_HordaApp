@@ -11,6 +11,7 @@ from crud import type as crud_type
 from schemas import CompanyCreateSchema
 from schemas import ProductCreateSchema2
 from schemas import TypeCreateSchema
+from schemas import StockCreateSchema2
 
 from db import db_conn as db_helper
 
@@ -51,6 +52,10 @@ async def create_types(session: AsyncSession):
         )
 
     return result
+
+    
+async def create_stocks(session: AsyncSession):
+    stock_list = list[StockCreateSchema2] = ...
     
 
 
