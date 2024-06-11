@@ -90,5 +90,18 @@ async def get_stock_by_id(
     return stock
 
     
+async def delete_all_stocks(
+    session: AsyncSession,
+    ) -> None:
+
+    stmt = delete(Stock)
+
+    await session.execute(stmt)
+    await session.commit()
+
+
+
+
+    
     
     
