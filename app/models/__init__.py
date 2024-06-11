@@ -16,7 +16,6 @@ from .base import Base
 
 from .company import Company
 from .product import Product
-from .production import Production
 from .stock import Stock
 from .type import Type
 from .warehouse import Warehouse
