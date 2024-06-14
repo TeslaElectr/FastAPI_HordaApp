@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy import delete
 from sqlalchemy import select
 from sqlalchemy import Result
@@ -36,7 +37,7 @@ async def get_all_products(
 async def get_proudct_by_id(
     session: AsyncSession,
     product_id: int,
-    ) -> Product:
+    ) -> Optional[Product]:
 
     stmt = (
         select(Product)
@@ -51,9 +52,9 @@ async def get_proudct_by_id(
 
     product = result.scalar_one_or_none()
 
-    return product
-    
+    return product 
 
+    
 async def create_product(
     session: AsyncSession,
     product_create: ProductCreateSchema,
@@ -68,25 +69,23 @@ async def create_product(
             type_id=type_id,
         )
     except Exception as e:
-        raise PydanticDumpException(
-            f"error with commit company {e.errors()}"
-            )
+        print(e)
+        raise PydanticDumpException()
 
     session.add(product)
 
     try:
         await session.commit()
     except Exception as e:
-        raise DataBaseConnectionError(
-            f"error commit db {e.errors()}"
-            )
+        print(e)
+        raise DataBaseConnectionError()
 
     return product
 
     
 async def create_products(
     session: AsyncSession,
-    create_products:ProductCreateSchema2,
+    create_products: list[ProductCreateSchema2],
     ):
 
     try:

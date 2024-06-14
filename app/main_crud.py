@@ -41,7 +41,7 @@ async def create_products(session: AsyncSession):
     result = await crud_product.create_products(
        session=session,
        create_products=products_list,
-        )
+       )
 
     return result
 
