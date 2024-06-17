@@ -73,13 +73,13 @@ async def create_stocks(session: AsyncSession):
 async def queries():
     async with db_helper.session_factory() as session:
 
-        # company_list = await create_companies(session=session)
-        # type_list = await create_types(session=session)
-        # print(company_list,"\n",type_list)
+        company_list = await create_companies(session=session)
+        type_list = await create_types(session=session)
+        print(company_list,"\n",type_list)
 
-        # product_list = await create_products(session=session)
+        product_list = await create_products(session=session)
         stock_list = await create_stocks(session=session)
-        # print(product_list, "\n", stock_list)
+        print(product_list, "\n", stock_list)
 
 
         # await crud_stock.delete_all_stocks(session=session)
