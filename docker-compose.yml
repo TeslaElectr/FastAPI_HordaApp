@@ -1,10 +1,19 @@
 version: '3'
 
 services:
-  pg:
+  pg_main:
     image: postgres
     environment:
       POSTGRES_DB: hdb
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+
+  pg_test:
+    image: postgres
+    environment:
+      POSTGRES_DB: hdb_test
       POSTGRES_USER: user 
       POSTGRES_PASSWORD: example
     ports:
