@@ -64,13 +64,13 @@ async def create_types(session: AsyncSession):
 async def main():
     async with db_helper.session_factory() as session:
 
-
         company_list = await create_companies(session=session)
         type_list = await create_types(session=session)
         print(company_list,"\n",type_list)
 
         product_list = await create_products(session=session)
-        print(product_list)
+        stock_list = await create_stocks(session=session)
+        print(product_list, "\n", stock_list)
 
 
         # await crud_product.delete_all_products(session=session)
