@@ -1,9 +1,9 @@
-import factory
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from faker import Faker
 
 from app.models import Company
+
+import factory
 
 
 fake = Faker()
