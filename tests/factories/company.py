@@ -1,9 +1,8 @@
+import factory
 from sqlalchemy.ext.asyncio import AsyncSession
 from faker import Faker
 
 from app.models import Company
-
-import factory
 
 
 fake = Faker()
@@ -12,6 +11,7 @@ fake = Faker()
 class CompanyFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = Company
+        sqlalchemy_session_persistence = None
         
     id = factory.Sequence(lambda n: n)
     name = factory.LazyAttribute(lambda _: fake.company())
@@ -26,7 +26,7 @@ class CompanyFactory(factory.alchemy.SQLAlchemyModelFactory):
     @factory.post_generation
     def products(self, create, extracted, **kwargs):
         if not create:
-            return
+            return None
 
         if extracted:
             for product in extracted:
@@ -37,7 +37,7 @@ class CompanyFactory(factory.alchemy.SQLAlchemyModelFactory):
     @factory.post_generation
     def stocks(self, create, extracted, **kwargs):
         if not create:
-            return 
+            return None
         
         if extracted:
             for stock in extracted:
