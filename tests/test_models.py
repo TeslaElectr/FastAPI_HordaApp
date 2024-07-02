@@ -2,6 +2,7 @@ import pytest
 
 from tests.factories import CompanyFactory
 from sqlalchemy import Result
+from sqlalchemy import text
 
 from app.models import Company
 
@@ -21,6 +22,14 @@ async def test_add_companies(session):
     count = result.scalar_one()
 
     assert count == 1
+
+
+@pytest.mark.asyncio
+async def test_example(async_session):
+
+        result = await async_session.execute(text("SELECT 1"))
+        assert result.scalar() == 1
+
 
     
 

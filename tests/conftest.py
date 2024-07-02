@@ -51,7 +51,7 @@ async def engine():
 
 
 @pytest.fixture(scope="session")
-async def apply_migrations(engine):
+async def apply_migrations():
     logger.debug("Applying migrations. ")
 
     alembic_cfg = Config("alembic.ini")
@@ -70,12 +70,12 @@ async def async_session(engine):
         class_=AsyncSession,
         expire_on_commit=settings.expire_on_commit
         )
+
     async with async_session() as session:
         yield session
-
+# 
     await session.rollback()
     logger.debug("Async session finished. ")
-
         
         
 # @pytest.fixture(scope="function")
