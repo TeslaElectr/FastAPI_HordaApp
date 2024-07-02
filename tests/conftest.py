@@ -22,10 +22,23 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
+async_engine = create_async_engine(
+    url=settings.DB_URL,
+    echo=settings.DB_ECHO,
+)
+
+
+async_session_local = async_sessionmaker(
+    bind=async_engine,
+    class_=AsyncSession,
+    expire_on_commit=settings.expire_on_commit,
+)
+
+
 @pytest.fixture(scope="session")
-def event_loop():
+def event_loop(request):
     logger.debug("Setting up event loop fixture. ")
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
     logger.debug("Event loop fixture finished. ")
@@ -42,15 +55,6 @@ def docker_compose_up():
 
 
 @pytest.fixture(scope="session")
-async def engine():
-    logger.debug("Create async engine. ")
-    async_engine = create_async_engine(url=settings.DB_URL)
-    yield async_engine
-    await async_engine.dispose()
-    logger.debug("Async engine dispose. ")
-
-
-@pytest.fixture(scope="session")
 async def apply_migrations(engine):
     logger.debug("Applying migrations. ")
 
@@ -63,14 +67,9 @@ async def apply_migrations(engine):
     
 
 @pytest.fixture(scope="function")
-async def async_session(engine):
+async def async_session():
     logger.debug("Create async session. ")
-    async_session = async_sessionmaker(
-        bind=engine,
-        class_=AsyncSession,
-        expire_on_commit=settings.expire_on_commit
-        )
-    async with async_session() as session:
+    async with async_session_local() as session:
         yield session
 
     await session.rollback()
