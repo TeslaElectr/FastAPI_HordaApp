@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from schemas import ProductSchema
 from schemas import ProductCreateSchema
 
-from db import db_conn as db_helper
+# from db import db_conn as db_helper
+from db import get_db
 
 from crud import product as crud_product
 
@@ -21,7 +22,7 @@ router = APIRouter(
 
 @router.get("/", response_model=list[ProductSchema])
 async def get_all_products(
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_db),
     ) -> list[Product]:
 
     products = await crud_product.get_all_products(session=session)
@@ -34,7 +35,7 @@ async def create_product(
     company_id: int,
     type_id: int,
     product_create: ProductCreateSchema,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_db),
     ) -> Product:
 
     product = await crud_product.create_product(

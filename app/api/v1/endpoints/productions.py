@@ -3,12 +3,13 @@ from fastapi import Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db import db_conn as db_helper
+from db import get_db
+# from db import db_conn as db_helper
 
-from models import Production
+# from models import Production
 
-from schemas import ProductionCreateSchema
-from schemas import ProductionSchema
+# from schemas import ProductionCreateSchema
+# from schemas import ProductionSchema
 
 from crud import production as crud_production
 
@@ -22,7 +23,7 @@ router = APIRouter(
 # async def add_production(
 #     product_id: int,
 #     create_production: ProductionCreateSchema,
-#     session: AsyncSession = Depends(db_helper.session_dependency),
+#     session: AsyncSession = Depends(get_db),
 #     ) -> Production:
     
 #     production = await crud_production.create_production(

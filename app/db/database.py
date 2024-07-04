@@ -63,6 +63,17 @@ class DatabaseSessionManager:
     async def create_all(self, connection: AsyncConnection):
         await connection.run_sync(Base.metadata.create_all)
 
+
     async def drop_all(self, connection: AsyncConnection):
         await connection.run_sync(Base.metadata.drop_all)
             
+
+sessionmanager = DatabaseSessionManager()
+
+
+async def get_db():
+    async with sessionmanager.session() as session:
+        yield session 
+
+
+

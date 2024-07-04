@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from schemas import TypeSchema
 from schemas import TypeCreateSchema
 
-from db import db_conn as db_helper
+# from db import db_conn as db_helper
+from db import get_db
 
 from crud import type as crud_type
 
@@ -21,7 +22,7 @@ router = APIRouter(
 
 @router.get("/", response_model=list[TypeSchema])
 async def get_all_types(
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_db),
     ) -> list[Type]:
 
     types = await crud_type.get_all_types(session=session)
@@ -32,7 +33,7 @@ async def get_all_types(
 @router.post("/create/", response_model=TypeSchema)
 async def create_type(
     type_create: TypeCreateSchema,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_db),
     ) -> Type:
 
     type1 = await crud_type.create_type(
