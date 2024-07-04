@@ -51,17 +51,20 @@ async def engine():
 
 
 @pytest.fixture(scope="session")
-async def apply_migrations():
+async def apply_migrations(engine):
     logger.debug("Applying migrations. ")
 
-    alembic_cfg = Config("alembic.ini")
-    alembic_cfg.attributes["configure_logger"] = False
-    command.upgrade(alembic_cfg, "head")
-    yield
+    async with engine.begin() as conn:
+        alembic_cfg = Config("alembic.ini")
+        alembic_cfg.set_main_option("sqlalchemy.url", settings.DB_URL)
+        alembic_cfg.attributes["configure_logger"] = False
+        await conn.run_sync(command.upgrade, alembic_cfg, "head")
+    yield 
     command.downgrade(alembic_cfg, "head")
     logger.debug("Migration rolled back. ")
-    
 
+
+    
 @pytest.fixture(scope="function")
 async def async_session(engine):
     logger.debug("Create async session. ")
@@ -81,4 +84,3 @@ async def async_session(engine):
 # @pytest.fixture(scope="function")
 # def setup_factories(async_session):
 #     CompanyFactory._meta.sqlal
-    

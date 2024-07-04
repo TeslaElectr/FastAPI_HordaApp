@@ -20,7 +20,7 @@ class DataBaseHelper:
         self.max_overflow = max_overflow
         self.pool_size = pool_size
 
-        self.engine = create_async_engine(
+        self.engine: AsyncEngine = create_async_engine(
             url=self.url,
             echo=self.echo,
             max_overflow=self.max_overflow,
