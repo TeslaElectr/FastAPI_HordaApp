@@ -69,7 +69,7 @@ async def get_all_stocks(
     )
 
     result: Result = await session.execute(stmt)
-    stocks = await result.scalars()
+    stocks = list(result.scalars().all())
 
     return stocks
 
@@ -81,11 +81,11 @@ async def get_stock_by_id(
 
     stmt = (
         select(Stock)
-        .where(stock_id == Stock.id)
+        .where(Stock.id == stock_id)
     )
 
     result: Result = await session.execute(stmt)
-    stock = await result.scalar_one_or_none()
+    stock = result.scalar_one_or_none()
 
     return stock
 

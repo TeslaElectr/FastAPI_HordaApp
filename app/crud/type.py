@@ -26,7 +26,7 @@ async def get_all_types(
         result: Result = await session.execute(stmt)
     except Exception as e:
         raise DataBaseConnectionError(
-            f"###error to connect db {e.errors()}"
+            f"###error to connect db {str(e)}"
             )
 
     types = list(result.scalars().all())
@@ -44,7 +44,7 @@ async def create_type(
         )
     except Exception as e:
         raise PydanticDumpException(
-            f"###pydantic error {e.errors()}"
+            f"###pydantic error {str(e)}"
             )
 
     session.add(type1)
@@ -53,7 +53,7 @@ async def create_type(
         await session.commit()
     except Exception as e:
         raise DataBaseConnectionError(
-            f"### errorr to connect db {e.errors()}"
+            f"### errorr to connect db {str(e)}"
             )
 
     return type1
