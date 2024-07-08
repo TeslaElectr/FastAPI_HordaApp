@@ -1,3 +1,4 @@
+import os
 import contextlib
 from collections.abc import AsyncIterator
 
@@ -7,19 +8,25 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from alembic.config import Config
+from alembic import command
+
 from app.models import Base
 
 
+ALEMBIC_CONFIG = "alembic.ini"
 
 class DatabaseSessionManager:
     
     def __init__(self):
         self._engine: AsyncEngine | None = None
         self._sessionmaker: async_sessionmaker | None = None
+        self.host: str | None = None
         
     def init(self, host):
         self._engine = create_async_engine(host)
         self._sessionmaker = async_sessionmaker(autocommit=False, bind=self._engine)
+
 
         
     async def close(self):
@@ -66,6 +73,19 @@ class DatabaseSessionManager:
 
     async def drop_all(self, connection: AsyncConnection):
         await connection.run_sync(Base.metadata.drop_all)
+        
+        
+    def upgrade_head(self):
+        alembic_cfg = Config(ALEMBIC_CONFIG)
+        command.upgrade(alembic_cfg, "head")
+
+
+    def downgrade_base(self):
+        alembic_cfg = Config(ALEMBIC_CONFIG)
+        command.downgrade(alembic_cfg, "base")
+
+        
+        
             
 
 sessionmanager = DatabaseSessionManager()

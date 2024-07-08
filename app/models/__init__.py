@@ -1,13 +1,10 @@
 __all__ = (
     "Company",
     "Product",
-    "Production",
     "Stock",
     "Base",
     "Type",
     "Warehouse",
-    # "products_productions_stocks_associated",
-    # "products_products_associated",
     "ProductProductionStockAssociated",
 )
 

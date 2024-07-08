@@ -40,6 +40,7 @@ def client(app):
         yield c
 
         
+
 import os 
 os.environ['PG_CTL'] = 'pg_ctlcluster'
 test_db = factories.postgresql_proc(port=None, dbname="test_db")
@@ -71,15 +72,23 @@ async def connection_test(test_db, event_loop):
 
         connection_str = f"postgresql+psycopg://{pg_user}:@{pg_host}:{pg_port}/{pg_db}"
         sessionmanager.init(host=connection_str)
+        os.environ["DATABASE_URL"] = connection_str
         yield
         await sessionmanager.close()
         
     
+# @pytest.fixture(scope="function", autouse=True)
+# async def create_tables(connection_test):
+#     async with sessionmanager.connect() as connection:
+#         await sessionmanager.drop_all(connection=connection)
+#         await sessionmanager.create_all(connection=connection)
+
+
 @pytest.fixture(scope="function", autouse=True)
-async def create_tables(connection_test):
-    async with sessionmanager.connect() as connection:
-        await sessionmanager.drop_all(connection=connection)
-        await sessionmanager.create_all(connection=connection)
+def alembic_upgrade_downgrade(connection_test):
+    sessionmanager.upgrade_head()
+    yield
+    sessionmanager.downgrade_base()
 
         
 @pytest.fixture(scope="function", autouse=True)
