@@ -4,16 +4,13 @@ from sqlalchemy import select
 from sqlalchemy import delete
 from sqlalchemy import Result
 
-from models import Stock
+from app.models import Stock
 
-from exceptions import DataBaseConnectionError
-from exceptions import PydanticDumpException
+from app.schemas import StockCreateSchema2
+from app.schemas import StockSchema
 
-from schemas import StockCreateSchema2
-from schemas import StockSchema
-
-from exceptions import PydanticDumpException
-from exceptions import DataBaseConnectionError
+from app.exceptions import PydanticDumpException
+from app.exceptions import DataBaseConnectionError
 
 
 # StockCreateSchema2 - schema with company_id and product_id
@@ -98,10 +95,3 @@ async def delete_all_stocks(
 
     await session.execute(stmt)
     await session.commit()
-
-
-
-
-    
-    
-    

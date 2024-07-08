@@ -3,15 +3,15 @@ from fastapi import Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas import CompanySchema
-from schemas import CompanyCreateSchema
+from app.schemas import CompanySchema
+from app.schemas import CompanyCreateSchema
 
 # from db import db_conn as db_helper
-from db import get_db
+from app.db import get_db
 
-from crud import company as crud_company
+from app.crud import company as crud_company
 
-from models import Company
+from app.models import Company
 
 
 router = APIRouter(

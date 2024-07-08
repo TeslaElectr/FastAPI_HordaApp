@@ -5,13 +5,13 @@ from sqlalchemy import Result
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import Product
+from app.models import Product
 
-from schemas import ProductCreateSchema2
-from schemas import ProductCreateSchema
+from app.schemas import ProductCreateSchema2
+from app.schemas import ProductCreateSchema
 
-from exceptions import PydanticDumpException
-from exceptions import DataBaseConnectionError
+from app.exceptions import PydanticDumpException
+from app.exceptions import DataBaseConnectionError
 
 
 async def get_all_products(

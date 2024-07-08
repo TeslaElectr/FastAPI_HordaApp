@@ -3,7 +3,7 @@ import contextlib
 from fastapi import FastAPI
 
 
-from db.database import sessionmanager
+from db.database import sessionmanager 
 from core import settings
 
 
@@ -35,16 +35,3 @@ def init_app(init_db=True) -> FastAPI:
         return {"Hello":"World!"}
 
     return application
-
-app = init_app()
-    
-    
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        app="main:app",
-        host="0.0.0.0",
-        port=8001,
-        reload=True,
-    )

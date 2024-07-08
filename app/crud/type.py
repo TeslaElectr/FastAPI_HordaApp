@@ -4,13 +4,13 @@ from sqlalchemy import select
 from sqlalchemy import delete
 from sqlalchemy import Result
 
-from models import Type
+from app.models import Type
 
-from exceptions import DataBaseConnectionError
-from exceptions import PydanticDumpException
+from app.exceptions import DataBaseConnectionError
+from app.exceptions import PydanticDumpException
 
-from schemas import TypeCreateSchema
-from schemas import TypeSchema
+from app.schemas import TypeCreateSchema
+from app.schemas import TypeSchema
 
 
 async def get_all_types(

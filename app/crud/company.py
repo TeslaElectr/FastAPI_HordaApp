@@ -3,13 +3,13 @@ from sqlalchemy import delete
 from sqlalchemy import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import Company
+from app.models import Company
 
-from schemas import CompanyCreateSchema
-from schemas import CompanySchema
+from app.schemas import CompanyCreateSchema
+from app.schemas import CompanySchema
 
-from exceptions import DataBaseConnectionError
-from exceptions import PydanticDumpException
+from app.exceptions import DataBaseConnectionError
+from app.exceptions import PydanticDumpException
 
 
 

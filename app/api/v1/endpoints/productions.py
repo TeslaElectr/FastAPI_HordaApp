@@ -3,7 +3,7 @@ from fastapi import Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db import get_db
+from app.db import get_db
 # from db import db_conn as db_helper
 
 # from models import Production
@@ -11,7 +11,7 @@ from db import get_db
 # from schemas import ProductionCreateSchema
 # from schemas import ProductionSchema
 
-from crud import production as crud_production
+from app.crud import production as crud_production
 
 router = APIRouter(
     prefix="/productions",

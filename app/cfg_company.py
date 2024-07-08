@@ -1,6 +1,6 @@
 from schemas import CompanyCreateSchema
 
-def get_list_companies():
+def get_list_companies() -> list[CompanyCreateSchema]:
     horda = CompanyCreateSchema(
         name="Horda",
         city="Saint-Petersburg",
