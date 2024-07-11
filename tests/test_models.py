@@ -24,14 +24,8 @@ from app.models import Company
 #         result: Result = await session.execute(text("SELECT 1"))
 #         assert result.scalar() == 1
 
-        
-        
+
 def test_get_companies(client):
     response = client.get("/companies")
     assert response.status_code == 200
     assert response.json() == []
-
-
-    
-
-    
