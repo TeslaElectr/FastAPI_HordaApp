@@ -20,7 +20,7 @@ class Base(DeclarativeBase):
 
     
     def __str__(self) -> str:
-        return f"- {self.__class__.__name__}: {self.__name__}"
+        return f"- {self.__class__.__name__}: class_name"
 
         
     def __repr__(self) -> str:

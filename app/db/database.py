@@ -75,13 +75,11 @@ class DatabaseSessionManager:
         await connection.run_sync(Base.metadata.drop_all)
         
         
-    def upgrade_head(self):
+    @contextlib.contextmanager
+    def alembic_run_migrations(self):
         alembic_cfg = Config(ALEMBIC_CONFIG)
         command.upgrade(alembic_cfg, "head")
-
-
-    def downgrade_base(self):
-        alembic_cfg = Config(ALEMBIC_CONFIG)
+        yield 
         command.downgrade(alembic_cfg, "base")
 
         

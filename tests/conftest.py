@@ -43,7 +43,8 @@ def client(app):
 
 import os
 
-os.environ["PG_CTL"] = "pg_ctlcluster"
+## need for use postgresql_proc() and testing_db_cruds
+# os.environ["PG_CTL"] = "pg_ctlcluster"
 test_db = factories.postgresql_proc(port=None, dbname="test_db")
 
 
@@ -80,10 +81,8 @@ async def connection_test(test_db, event_loop):
 
 # @pytest.fixture(scope="function", autouse=True)
 # def alembic_upgrade_downgrade(connection_test):
-#     sessionmanager.upgrade_head()
-
-#     yield
-#     sessionmanager.downgrade_base()
+#     with sessionmanager.alembic_run_migrations():
+#         yield
 
 
 @pytest.fixture(scope="function", autouse=True)
