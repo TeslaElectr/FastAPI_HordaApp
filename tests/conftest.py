@@ -44,13 +44,21 @@ def client(app):
 import os
 
 ## need for use postgresql_proc() and testing_db_cruds
-# os.environ["PG_CTL"] = "pg_ctlcluster"
+os.environ["PG_CTL"] = "pg_ctlcluster"
 test_db = factories.postgresql_proc(port=None, dbname="test_db")
 
 
 @pytest.fixture(scope="session")
 def event_loop(request):
-    loop = asyncio.get_event_loop_policy().get_event_loop()
+    try:
+        loop = asyncio.get_event_loop_policy().get_event_loop()
+    except RuntimeError as e:
+        if str(e).startswith('There is no current event loop in thread'):
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop=loop)
+        else:
+            raise
+        
     yield loop
     loop.close()
 
@@ -79,8 +87,9 @@ async def connection_test(test_db, event_loop):
         await sessionmanager.close()
 
 
+## ALEMBIC MIGRATION FIXTURE. error with 2 tests "RuntimeError There is no current event loop in thread 'MainThread'"
 # @pytest.fixture(scope="function", autouse=True)
-# def alembic_upgrade_downgrade(connection_test):
+# def alembic_upgrade_downgrade(event_loop, connection_test):
 #     with sessionmanager.alembic_run_migrations():
 #         yield
 

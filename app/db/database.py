@@ -1,6 +1,8 @@
 import os
 import contextlib
+from typing import Generator
 from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,13 +25,13 @@ class DatabaseSessionManager:
         self._sessionmaker: async_sessionmaker | None = None
         self.host: str | None = None
         
-    def init(self, host):
+    def init(self, host: str) -> None:
         self._engine = create_async_engine(host)
         self._sessionmaker = async_sessionmaker(autocommit=False, bind=self._engine)
 
 
         
-    async def close(self):
+    async def close(self) -> None:
         if self._engine is None:
             raise Exception("DatabaseSessionManager is nor initialized")
 
