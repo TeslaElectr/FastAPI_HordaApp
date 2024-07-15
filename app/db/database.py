@@ -17,6 +17,7 @@ from app.models import Base
 
 
 ALEMBIC_CONFIG = "alembic.ini"
+alembic_cfg = Config(ALEMBIC_CONFIG)
 
 class DatabaseSessionManager:
     
@@ -77,11 +78,11 @@ class DatabaseSessionManager:
         await connection.run_sync(Base.metadata.drop_all)
         
         
-    @contextlib.contextmanager
-    def alembic_run_migrations(self):
-        alembic_cfg = Config(ALEMBIC_CONFIG)
+    def upgrade_head(self):
         command.upgrade(alembic_cfg, "head")
-        yield 
+
+
+    def downgrade_base(self):
         command.downgrade(alembic_cfg, "base")
 
         

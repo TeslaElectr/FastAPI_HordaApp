@@ -95,10 +95,13 @@ async def connection_test(test_db, event_loop):
 
 
 @pytest.fixture(scope="function", autouse=True)
-async def create_tables(connection_test):
+async def create_tables(request, connection_test):
     async with sessionmanager.connect() as connection:
-        await sessionmanager.drop_all(connection=connection)
-        await sessionmanager.create_all(connection=connection)
+        if "test_alembic_migrations" not in request.keywords:
+            await sessionmanager.drop_all(connection=connection)
+            await sessionmanager.create_all(connection=connection)
+        else:
+            await sessionmanager.drop_all(connection=connection)
 
 
 @pytest.fixture(scope="function", autouse=True)
