@@ -3,6 +3,8 @@ import pytest
 from sqlalchemy import Result
 from sqlalchemy import text
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models import Company
 from app.crud.company import get_all_companies
 from app.crud.company import create_company
@@ -16,7 +18,7 @@ from tests.conftest import logger
 
 
 @pytest.mark.asyncio
-async def test_add_company(session):
+async def test_add_company(session: AsyncSession):
 
     number_of_factories = 0
     company_list = []
@@ -34,7 +36,7 @@ async def test_add_company(session):
 
     
 @pytest.mark.asyncio
-async def test_add_companies(session):
+async def test_add_companies(session: AsyncSession):
 
     number_of_factories = 0
     company_list = []
@@ -51,10 +53,24 @@ async def test_add_companies(session):
     assert len(companies) == number_of_factories
 
     
+@pytest.mark.asyncio
+async def test_delete_all_companies(session: AsyncSession):
+
+    await test_add_companies(session=session)
+    await delete_all_companies(session=session)
+
+    companies = await get_all_companies(session=session)
+
+    assert companies == []
+
+    
+
+    
 
 
-def test_get_companies(client):
+def test_apiget_companies(client):
     response = client.get("/companies")
+
     assert response.status_code == 200
     assert response.json() == []
 
