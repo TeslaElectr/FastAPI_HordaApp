@@ -87,13 +87,6 @@ async def connection_test(test_db, event_loop):
         await sessionmanager.close()
 
 
-## ALEMBIC MIGRATION FIXTURE. error with 2 tests "RuntimeError There is no current event loop in thread 'MainThread'"
-# @pytest.fixture(scope="function", autouse=True)
-# def alembic_upgrade_downgrade(event_loop, connection_test):
-#     with sessionmanager.alembic_run_migrations():
-#         yield
-
-
 @pytest.fixture(scope="function", autouse=True)
 async def create_tables(request, connection_test):
     async with sessionmanager.connect() as connection:
