@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 import logging
 from contextlib import ExitStack
 import asyncio
@@ -6,22 +7,29 @@ import pytest
 from pytest_postgresql import factories
 from pytest_postgresql.janitor import DatabaseJanitor
 
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.ext.asyncio import async_sessionmaker
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from fastapi.testclient import TestClient
 
-from alembic.config import Config
-from alembic import command
-
 from app import init_app
+
 from app.db import sessionmanager
 from app.db import get_db
-from app.models import Base
+
+from app.schemas import CompanyCreateSchema
+from app.schemas import TypeCreateSchema
+
+from app.crud import type as crud_type
+from app.crud import company as crud_company
 
 from tests.factories import CompanyFactory
-from tests.core import settings
+from tests.factories import TypeFactory
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+if TYPE_CHECKING:
+    from app.models import Company
+    from app.models import Type
+
+
 
 
 # logging settings
@@ -51,10 +59,11 @@ test_db = factories.postgresql_proc(port=None, dbname="test_db")
 @pytest.fixture(scope="session")
 def event_loop(request):
     try:
-        loop = asyncio.get_event_loop_policy().get_event_loop()
+        loop = asyncio.get_event_loop()
     except RuntimeError as e:
-        if str(e).startswith('There is no current event loop in thread'):
+        if str(e).startswith("There is no current event loop in thread"):
             loop = asyncio.new_event_loop()
+
             asyncio.set_event_loop(loop=loop)
         else:
             raise
@@ -110,3 +119,43 @@ async def session_override(app, connection_test):
 async def session(connection_test):
     async with sessionmanager.session() as session:
         yield session
+
+        
+@pytest.fixture
+def create_companies(event_loop):
+    async def _create_companies(num_of_companise_create: int, session: AsyncSession):
+
+        number_of_factories = 0
+        
+        while number_of_factories < num_of_companise_create:
+            company_data_all = CompanyFactory.build()
+            company_data_create = {k: v for k, v in company_data_all.__dict__.items() if not k.startswith("_")}
+            company_create = CompanyCreateSchema(**company_data_create)
+            number_of_factories += 1
+            await crud_company.create_company(session=session, company_create=company_create)
+
+        companies: list[Company] = await crud_company.get_all_companies(session=session)
+        yield companies
+
+    return _create_companies
+
+    
+    
+@pytest.fixture
+def create_typies(event_loop):
+    async def _create_typies(num_of_typies_create: int, session: AsyncSession):
+
+        number_of_factories = 0
+
+        while number_of_factories < num_of_typies_create:
+            type_data_all = TypeFactory.build()
+            type_data_create = {k: v for k, v in type_data_all.__dict__.items() if not k.startswith("_")}
+            type_create = TypeCreateSchema(**type_data_create)
+            number_of_factories += 1
+            await crud_type.create_type(session=session, type_create=type_create)
+
+        typies: list[Type] = await crud_type.get_all_types(session=session)
+        yield typies
+    
+    return _create_typies
+
