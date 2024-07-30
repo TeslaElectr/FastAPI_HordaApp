@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 import logging
+import threading
 from contextlib import ExitStack
 import asyncio
 import pytest
@@ -36,7 +37,6 @@ if TYPE_CHECKING:
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-
 @pytest.fixture(autouse=True)
 def app():
     with ExitStack():
@@ -56,18 +56,25 @@ os.environ["PG_CTL"] = "pg_ctlcluster"
 test_db = factories.postgresql_proc(port=None, dbname="test_db")
 
 
+# @pytest.fixture(scope="session", autouse=True)
+# def event_loop(request):
+#     try:
+#         loop = asyncio.get_event_loop()
+#     except RuntimeError as e:
+#         if str(e).startswith("There is no current event loop in thread"):
+#             loop = asyncio.new_event_loop()
+
+#             asyncio.set_event_loop(loop=loop)
+#         else:
+#             raise
+        
+#     yield loop
+#     loop.close()
+
+
 @pytest.fixture(scope="session")
 def event_loop(request):
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError as e:
-        if str(e).startswith("There is no current event loop in thread"):
-            loop = asyncio.new_event_loop()
-
-            asyncio.set_event_loop(loop=loop)
-        else:
-            raise
-        
+    loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
 
@@ -118,11 +125,12 @@ async def session_override(app, connection_test):
 @pytest.fixture
 async def session(connection_test):
     async with sessionmanager.session() as session:
+        logger.debug(f"This is fuxture session - {threading.current_thread().name}")
         yield session
 
         
 @pytest.fixture
-def create_companies(event_loop):
+def create_companies():
     async def _create_companies(num_of_companise_create: int, session: AsyncSession):
 
         number_of_factories = 0
@@ -135,14 +143,14 @@ def create_companies(event_loop):
             await crud_company.create_company(session=session, company_create=company_create)
 
         companies: list[Company] = await crud_company.get_all_companies(session=session)
-        yield companies
+        return companies
 
     return _create_companies
 
     
     
 @pytest.fixture
-def create_typies(event_loop):
+def create_typies():
     async def _create_typies(num_of_typies_create: int, session: AsyncSession):
 
         number_of_factories = 0
@@ -155,7 +163,7 @@ def create_typies(event_loop):
             await crud_type.create_type(session=session, type_create=type_create)
 
         typies: list[Type] = await crud_type.get_all_types(session=session)
-        yield typies
+        return typies
     
     return _create_typies
 

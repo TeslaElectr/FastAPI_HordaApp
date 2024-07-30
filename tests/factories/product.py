@@ -11,12 +11,12 @@ fake = Faker()
 
 class ProductFactory(factory.alchemy.SQLAlchemyModelFactory):
 
-    company_id = None
-    type_id = None
+    # company_id = None
+    # type_id = None
     
-    def __init__(self, company_id, type_id):
-        ProductFactory.company_id = company_id
-        ProductFactory.type_id = type_id
+    # def __init__(self, company_id, type_id):
+    #     ProductFactory.company_id = company_id
+    #     ProductFactory.type_id = type_id
 
     class Meta:
         model = Product

@@ -1,4 +1,6 @@
 from typing import TYPE_CHECKING
+import logging
+import threading
 import pytest
 
 from sqlalchemy import Result
@@ -17,11 +19,15 @@ from app.schemas import CompanyCreateSchema
 
 
 from tests.factories import CompanyFactory
-from tests.conftest import logger
 
 
 if TYPE_CHECKING:
     from app.models import Company
+
+
+# logging settings
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @pytest.mark.asyncio
@@ -29,6 +35,8 @@ async def test_add_company(session: AsyncSession):
 
     number_of_factories = 0
     company_list = []
+
+    logger.debug(f"This is test_add_company - {threading.current_thread().name}")
 
     while number_of_factories < 20:
         company_data_all = CompanyFactory.build()
@@ -61,11 +69,14 @@ async def test_add_companies(session: AsyncSession):
     await create_companies(session=session, company_list=company_list)
     companies: list[Company] = await get_all_companies(session=session)
 
+    logger.debug(f"This is test_companies {threading.current_thread().name}")
     assert len(companies) == number_of_factories
 
 
 @pytest.mark.asyncio
 async def test_delete_all_companies(session: AsyncSession):
+
+    logger.debug(f"This is test_delete_all_companies {threading.current_thread().name}")
 
     await test_add_companies(session=session)
     await delete_all_companies(session=session)
@@ -77,6 +88,8 @@ async def test_delete_all_companies(session: AsyncSession):
 
 def test_apiget_companies(client):
     response = client.get("/companies")
+
+    logger.debug(f"This is test_api_companies {threading.current_thread().name}")
 
     assert response.status_code == 200
     assert response.json() == []
