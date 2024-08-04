@@ -1,8 +1,6 @@
-import os
 import contextlib
-from typing import Generator
+
 from collections.abc import AsyncIterator
-from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,6 +16,7 @@ from app.models import Base
 
 ALEMBIC_CONFIG = "alembic.ini"
 alembic_cfg = Config(ALEMBIC_CONFIG)
+
 
 class DatabaseSessionManager:
     
@@ -85,9 +84,6 @@ class DatabaseSessionManager:
     def downgrade_base(self):
         command.downgrade(alembic_cfg, "base")
 
-        
-        
-            
 
 sessionmanager = DatabaseSessionManager()
 

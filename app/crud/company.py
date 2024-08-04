@@ -38,7 +38,7 @@ async def create_company(
         
     except Exception as e:
         raise PydanticDumpException(
-            f"error with .mode_dump pydantic {e.errors()}" # type: ignore
+            f"error with .mode_dump pydantic {str(e)}" # type: ignore
             )
 
     session.add(company)
@@ -47,7 +47,7 @@ async def create_company(
         await session.commit()
     except Exception as e:
         raise DataBaseConnectionError(
-            f"error with commit company {e.errors()}"# type: ignore
+            f"error with commit company {str(e)}"# type: ignore
             )
         
 

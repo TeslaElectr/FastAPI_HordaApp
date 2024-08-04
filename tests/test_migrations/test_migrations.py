@@ -12,4 +12,3 @@ def test_alembic_migration():
     logger.debug(f"upgrade migrations done")
     sessionmanager.downgrade_base()
     logger.debug(f"migrations done")
-    

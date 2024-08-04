@@ -1,22 +1,17 @@
-from typing import TYPE_CHECKING
 import logging
+from typing import TYPE_CHECKING
 
 import random
 import threading
-import asyncio
 
+import asyncio
 import pytest
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.product import get_all_products
 from app.crud.product import create_product
-from app.crud.product import get_proudct_by_id
-from app.crud.product import create_products
-from app.crud.product import delete_all_products
-
 from app.schemas import ProductCreateSchema
-
 
 from tests.factories import ProductFactory
 
@@ -29,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(scope="session")
 async def test_create_products(session: AsyncSession, create_companies, create_typies):
     num_of_typies = 4
     num_of_companies = 20
@@ -37,7 +32,6 @@ async def test_create_products(session: AsyncSession, create_companies, create_t
 
     
     logger.debug(f"This is test_create_products  - {threading.current_thread().name}")
-    print(f"This is test_create_products  - {threading.current_thread().name}")
 
     await create_companies(
         num_of_companise_create=num_of_companies,
@@ -72,3 +66,31 @@ async def test_create_products(session: AsyncSession, create_companies, create_t
     logger.debug(f"This is {threading.current_thread().name}")
 
     assert len(products) == num_of_products
+
+
+@pytest.mark.test_event_loop
+@pytest.mark.asyncio
+async def test_runs_in_a_loop():
+    assert asyncio.get_running_loop()
+
+
+# @pytest.mark.asyncio
+# async def test_add_company(session: AsyncSession):
+
+#     number_of_factories = 0
+#     company_list = []
+
+#     logger.debug(f"This is test_add_company - {threading.current_thread().name}")
+
+#     while number_of_factories < 20:
+#         company_data_all = CompanyFactory.build()
+#         company_data_create = {
+#             k: v for k, v in company_data_all.__dict__.items() if not k.startswith("_")
+#         }
+#         company_create = CompanyCreateSchema(**company_data_create)
+#         number_of_factories += 1
+#         await create_company(session=session, company_create=company_create)
+
+#     companies: list[Company] = await get_all_companies(session=session)
+
+#     assert len(companies) == number_of_factories

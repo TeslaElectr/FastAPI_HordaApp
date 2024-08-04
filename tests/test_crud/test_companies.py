@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 import logging
 import threading
+import asyncio
 import pytest
 
 from sqlalchemy import Result
@@ -93,3 +94,8 @@ def test_apiget_companies(client):
 
     assert response.status_code == 200
     assert response.json() == []
+
+
+@pytest.mark.asyncio
+async def test_runs_in_a_loop():
+    assert asyncio.get_running_loop()

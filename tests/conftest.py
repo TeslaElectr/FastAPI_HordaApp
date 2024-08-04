@@ -37,6 +37,7 @@ if TYPE_CHECKING:
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+
 @pytest.fixture(autouse=True)
 def app():
     with ExitStack():
@@ -56,25 +57,20 @@ os.environ["PG_CTL"] = "pg_ctlcluster"
 test_db = factories.postgresql_proc(port=None, dbname="test_db")
 
 
-# @pytest.fixture(scope="session", autouse=True)
+# @pytest.fixture(scope="session")
 # def event_loop(request):
 #     try:
 #         loop = asyncio.get_event_loop()
-#     except RuntimeError as e:
-#         if str(e).startswith("There is no current event loop in thread"):
+#     except RuntimeError:
 #             loop = asyncio.new_event_loop()
-
-#             asyncio.set_event_loop(loop=loop)
-#         else:
-#             raise
-        
 #     yield loop
 #     loop.close()
 
 
 @pytest.fixture(scope="session")
 def event_loop(request):
-    loop = asyncio.get_event_loop_policy().new_event_loop()
+    asyncio.get_event_loop_policy().set_event_loop(loop=asyncio.new_event_loop())
+    loop = asyncio.get_event_loop()
     yield loop
     loop.close()
 
@@ -111,6 +107,9 @@ async def create_tables(request, connection_test):
             await sessionmanager.create_all(connection=connection)
         else:
             await sessionmanager.drop_all(connection=connection)
+
+
+
 
 
 @pytest.fixture(scope="function", autouse=True)
